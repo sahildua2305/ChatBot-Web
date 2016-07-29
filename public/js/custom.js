@@ -1,6 +1,10 @@
 var chat_log;
 
 $(document).ready(function () {
+
+	// focus on the input field
+	$('#message').focus();
+
 	$('#sendMessage').click(function () {
 		console.log("send message");
 
@@ -32,6 +36,6 @@ $(document).ready(function () {
 		});
 		
 		// focus on the input field
-		// $('#message').focus();
+		$('#message').focus();
 	});
 });

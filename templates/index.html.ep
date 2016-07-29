@@ -12,9 +12,9 @@
 					<img src="/images/bot.jpg">
 				</div>
 				<div class="col-md-8">
-					<h1 style="text-align:center;">BookingBot</h1>
+					<h1 style="text-align:center;">ChatBot::Simple</h1>
 
-					<pre id="chat_messages"></pre>
+					<pre id="chat_messages"><div class="bot">Oh hey</div><div class="bot">I'm a bot that likes to talk.</div><div class="bot">and i can listen a bit too, but i'm mostly</div><div class="bot">just thinking about what i'm going to say next.</div><div class="bot">What's your name then?</div></pre>
 
 					<input id="message" type="text" name="message">
 					<button class="btn btn-success" id="sendMessage">Send</button>
