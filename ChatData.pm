@@ -73,7 +73,7 @@ my @DONT_KNOW = ("don't know" , "don't think so" , "can't tell");
 {   context 'where_you_from';
 
 
-    pattern ':where_theyre_from'
+    pattern ['from :where_theyre_from', ':where_theyre_from']
         => sub { context 'do_you_still_live_there' }
         => "well i don't get out much :name.\n so i've never been to :where_theyre_from. do you still live there?";
 }
