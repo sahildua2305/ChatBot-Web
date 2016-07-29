@@ -27,36 +27,41 @@ sub context {
 sub pattern {
     my ( $pattern, @rest ) = @_;
 
-    my $code = ref $rest[0] eq 'CODE' ? shift @rest : undef;
+    my @patterns = ref $pattern eq 'ARRAY' ? @{$pattern} : ($pattern);
+    my $code     = ref $rest[0] eq 'CODE'  ? shift @rest : undef;
 
     my $response = shift @rest;
 
     $patterns{$__context__} //= [];
 
-    push @{ $patterns{$__context__} },
-      {
-        pattern  => $pattern,
-        response => $response,
-        code     => $code,
-      };
+    for my $pattern (@patterns) {
+        push @{ $patterns{$__context__} },
+          {
+            pattern  => $pattern,
+            response => $response,
+            code     => $code,
+          };
+    }
 }
 
 sub transform {
-    my (@expr) = @_;
+    my ( $pattern, @rest ) = @_;
 
-    my $transform_to = pop @expr;
+    my @patterns = ref $pattern eq 'ARRAY' ? @{$pattern} : ($pattern);
+    my $code     = ref $rest[0] eq 'CODE'  ? shift @rest : undef;
 
-    my $code = ref $expr[-1] eq 'CODE' ? pop @expr : undef;
+    my $transform_to = shift @rest;
 
     $transforms{$__context__} //= [];
-    for my $exp (@expr) {
+    for my $pattern (@patterns) {
         push @{ $transforms{$__context__} },
           {
-            pattern   => $exp,
+            pattern   => $pattern,
             transform => $transform_to,
             code      => $code,
           };
     }
+
 }
 
 sub match {
@@ -140,7 +145,7 @@ sub process_transform {
 sub process_pattern {
     my $input = shift;
 
-    for my $context ('global', $__context__, 'fallback') {
+    for my $context ( 'global', $__context__, 'fallback' ) {
         for my $pt ( @{ $patterns{$context} } ) {
             my $match = match( $input, $pt->{pattern} );
             next if !$match;
@@ -166,7 +171,7 @@ sub process_pattern {
     }
 
     warn "Couldn't find a match for '$input' (context = '$__context__')\n";
-    # warn Dumper $patterns{$__context__};
+    warn Dumper $patterns{$__context__};
 
     return '';
 }

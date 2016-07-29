@@ -1,0 +1,18 @@
+#message {
+	width: 80%;
+}
+
+#avatar {
+	width: 80px;
+	margin-top: 25px;
+}
+
+.me {
+	text-align: right;
+	color:green;
+}
+
+#chat_messages {
+	height: 300px;
+	overflow-y: scroll;
+}
