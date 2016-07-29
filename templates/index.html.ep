@@ -1,0 +1,48 @@
+<html>
+<head>
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.1/jquery.min.js"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+</head>
+<body>
+	<h1>BookingBot</h1>
+
+	<pre id="chat_messages">
+	</pre>
+
+	<input id="message" type="text" name="message">
+	<button class="btn btn-success" id="sendMessage">Send</button>
+</body>
+
+<script>
+
+var chat_log;
+
+$(document).ready(function () {
+	$('#sendMessage').click(function () {
+		console.log("send message");
+
+		var message = $('#message').val();
+
+		$('#chat_messages').html($('#chat_messages').html() + "\n" + message);
+		$('#message').val('');
+
+		$.ajax({
+			url: '/chat',
+			data: {
+				message: message,
+				chat_log: chat_log
+			},
+			method: 'POST',
+			success: function (json_response) {
+				chat_log = json_response.chat_log;
+				var prev = $('#chat_messages').html();
+				$('#chat_messages').html(prev + "\n" + json_response.response);
+			},
+			fail: function (err) {
+				console.log(err);
+			}
+		});
+	});
+});
+</script>
